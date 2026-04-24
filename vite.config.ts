@@ -12,6 +12,9 @@ export default defineConfig({
       '@shared': '/src/shared'
     }
   },
+  define: {
+    'import.meta.env.VITE_SERVER_URL': JSON.stringify(process.env.VITE_SERVER_URL)
+  },
   server: {
     port: 3001,
     proxy: {
