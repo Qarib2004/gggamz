@@ -8,6 +8,13 @@
       "when": 1776859148857,
       "tag": "0000_slippery_changeling",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1777021281025,
+      "tag": "0001_faithful_magma",
+      "breakpoints": true
     }
   ]
 }
