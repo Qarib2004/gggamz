@@ -1,0 +1,25 @@
+{
+	"compilerOptions": {
+		"lib": ["ESNext", "DOM"],
+		"target": "ESNext",
+		"module": "ESNext",
+		"moduleResolution": "bundler",
+		"jsx": "react-jsx",
+
+		"strict": true,
+		"skipLibCheck": true,
+		"noFallthroughCasesInSwitch": true,
+
+		"allowJs": false,
+		"verbatimModuleSyntax": true,
+		"noEmit": true,
+
+		"baseUrl": ".",
+		"paths": {
+			"@server/*": ["src/server/*"],
+			"@client/*": ["src/client/*"],
+			"@shared/*": ["src/shared/*"]
+		}
+	},
+	"include": ["src"]
+}

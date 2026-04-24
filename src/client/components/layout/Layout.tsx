@@ -1,0 +1,37 @@
+import type { PropsWithChildren } from 'react'
+import { useParallax } from './useParallax'
+import { Header } from './header/Header'
+
+
+export default function Layout({ children }: PropsWithChildren) {
+      const bgRef = useParallax()
+
+  return (
+ <div className='relative min-h-screen overflow-hidden'>
+      <div ref={bgRef} className='absolute inset-0 will-change-transform'>
+        <img
+          src='/images/forest-vedmak.jpg'
+          alt='vedmak'
+          className='w-full h-full object-cover contrast-120 saturate-110 brightness-95'
+          draggable={false}
+        />
+      </div>
+
+      <div className='absolute inset-0 bg-[linear-gradient(to_right,rgba(4,12,24,0.7)_0%,rgba(6,20,40,0.7)_35%,transparent_70%)]' />
+
+      <div className='absolute inset-0 bg-linear-to-l from-accent/25 via-transparent to-transparent' />
+
+      <div className='absolute inset-0 bg-[radial-gradient(circle_at_80%_50%,rgba(254,186,135,0.05),transparent_30%)]' />
+
+      <div className='absolute inset-0 bg-[radial-gradient(circle,transparent_60%,rgba(0,0,0,0.4)_100%)]' />
+
+      <div className='relative z-10'>
+        <div className='container max-w-290 mx-auto'>
+          <Header />
+
+          <div>{children}</div>
+        </div>
+      </div>
+    </div>
+  )
+}
