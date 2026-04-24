@@ -9,6 +9,7 @@ import type { TurnstileInstance } from '@marsidev/react-turnstile'
 import { useQueryState } from 'nuqs'
 import { useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { toast } from 'sonner'
 
 export function App() {
   const navigate = useNavigate()
@@ -38,6 +39,23 @@ export function App() {
   return (
     <div className='mb-10'>
       <TopMenuFilters />
+      <button
+  onClick={() => {
+    toast('You are an administrator?', {
+      action: {
+        label: 'Yes',
+        onClick: () => navigate('/blade/auth')
+      },
+      cancel: {
+        label: 'No',
+        onClick: () => toast.dismiss()
+      }
+    })
+  }}
+  className='fixed bottom-4 right-4 px-4 py-2 bg-dark/70 border border-white/10 rounded-lg text-white hover:border-accent/50 transition-colors font-serif text-sm'
+>
+  Login
+</button>
       <div className='mt-6 flex items-center gap-2 max-w-md mx-auto'>
         <input
           type='text'

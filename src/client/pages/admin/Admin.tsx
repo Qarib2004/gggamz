@@ -8,6 +8,7 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import type { IRawgGame } from './rawg-game.types'
+import { useNavigate } from 'react-router-dom'
 
 type GameForm = Pick<
   TGame,
@@ -25,6 +26,7 @@ type GameForm = Pick<
 }
 
 export function Admin() {
+    const navigate = useNavigate()
   const [search, setSearch] = useState('')
   const [selected, setSelected] = useState<IRawgGame | null>(null)
 
@@ -96,8 +98,16 @@ export function Admin() {
   return (
     <div className='max-w-2xl mx-auto mt-10 space-y-5'>
       <h1 className='text-2xl font-serif text-accent'>Add Game</h1>
+      <button
+    type='button'
+    onClick={() => navigate('/')}
+    className='px-4 py-2 bg-dark/70 border border-white/10 rounded-lg text-white hover:border-accent/50 transition-colors font-serif text-sm'
+  >
+    Main page
+  </button>
 
       <div className='relative'>
+        
         <input
           type='text'
           placeholder='Search game in RAWG...'
