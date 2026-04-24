@@ -34,22 +34,26 @@ export function App() {
   }
 
   return (
-  <div className='mb-10'>
-     <TopMenuFilters />
-       <div className='mt-6'>
+    <div className='mb-10'>
+      <TopMenuFilters />
+      <div className='mt-6 flex items-center gap-2 max-w-md mx-auto'>
         <input
           type='text'
-          placeholder='Search your favorite games games...'
+          placeholder='Search your favorite games...'
           value={searchTerm ?? ''}
           onChange={e => setSearchTerm(e.target.value || null)}
-          className='w-full max-w-md mx-auto block px-4 py-2 bg-dark/70 border border-white/10 rounded-lg text-white placeholder:text-gray focus:outline-none focus:border-accent/50 font-serif'
+          className='flex-1 px-4 py-2 bg-dark/70 border border-white/10 rounded-lg text-white placeholder:text-gray focus:outline-none focus:border-accent/50 font-serif'
         />
+        <button
+          onClick={() => setSearchTerm(null)}
+          className='px-4 py-2 bg-dark/70 border border-white/10 rounded-lg text-white hover:border-accent/50 transition-colors font-serif whitespace-nowrap'
+        >
+          All
+        </button>
       </div>
       <GameList games={games} isLoading={isGamesLoading} />
 
-
-
-       <div className='p-4 bg-dark/60 border border-accent/30 rounded-xl'>
+      <div className='p-4 bg-dark/60 border border-accent/30 rounded-xl'>
         <div className='grid grid-cols-2 gap-4'>
           <SuggestionBar
             genreSlug={genreSlug}
@@ -68,6 +72,6 @@ export function App() {
           <Captcha ref={captchaRef} onSuccess={setToken} />
         </div>
       </div>
-  </div>
+    </div>
   )
 }
