@@ -1,0 +1,15 @@
+FROM oven/bun:1.2.18-alpine
+
+WORKDIR /app
+
+COPY package.json bun.lock* ./
+RUN bun install
+
+COPY . .
+
+ENV NODE_ENV=production
+ENV PORT=4200
+
+EXPOSE 4200
+
+CMD ["bun", "run", "start:server"]

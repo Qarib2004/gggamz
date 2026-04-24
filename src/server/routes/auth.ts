@@ -6,6 +6,33 @@ import Elysia, { t } from 'elysia'
 
 export const authRoutes = new Elysia({ prefix: '/api/auth' })
   .use(jwt({ name: 'jwt', secret: process.env.JWT_SECRET! }))
+    .post(
+    '/register',
+    async ({ body }) => {
+      const existing = await db.query.admins.findFirst({
+        where: eq(admins.username, body.username)
+      })
+
+      if (existing) {
+        throw new Error('Username already taken')
+      }
+
+      const passwordHash = await Bun.password.hash(body.password)
+
+      await db.insert(admins).values({
+        username: body.username,
+        passwordHash
+      })
+
+      return { success: true }
+    },
+    {
+      body: t.Object({
+        username: t.String({ minLength: 3 }),
+        password: t.String({ minLength: 8 })
+      })
+    }
+  )
   .post(
     '/login',
     async ({ body, jwt, cookie }) => {
