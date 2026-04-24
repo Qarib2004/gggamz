@@ -8,8 +8,10 @@ import { useGames } from '@client/hooks/useGames'
 import type { TurnstileInstance } from '@marsidev/react-turnstile'
 import { useQueryState } from 'nuqs'
 import { useRef, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 export function App() {
+  const navigate = useNavigate()
   const [genreSlug] = useQueryState('genre')
   const [searchTerm, setSearchTerm] = useQueryState('search')
 
@@ -45,7 +47,7 @@ export function App() {
           className='flex-1 px-4 py-2 bg-dark/70 border border-white/10 rounded-lg text-white placeholder:text-gray focus:outline-none focus:border-accent/50 font-serif'
         />
         <button
-          onClick={() => setSearchTerm(null)}
+          onClick={() => navigate('/')}
           className='px-4 py-2 bg-dark/70 border border-white/10 rounded-lg text-white hover:border-accent/50 transition-colors font-serif whitespace-nowrap'
         >
           All
