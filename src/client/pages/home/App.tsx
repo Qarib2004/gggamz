@@ -47,7 +47,10 @@ export function App() {
           className='flex-1 px-4 py-2 bg-dark/70 border border-white/10 rounded-lg text-white placeholder:text-gray focus:outline-none focus:border-accent/50 font-serif'
         />
         <button
-          onClick={() => navigate('/')}
+          onClick={() => {
+            setSearchTerm(null)
+            navigate('/')
+          }}
           className='px-4 py-2 bg-dark/70 border border-white/10 rounded-lg text-white hover:border-accent/50 transition-colors font-serif whitespace-nowrap'
         >
           All
