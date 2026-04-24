@@ -54,7 +54,7 @@ export const authRoutes = new Elysia({ prefix: '/api/auth' })
         httpOnly: true,
         maxAge: 60 * 60 * 24 * 3, 
         secure: process.env.NODE_ENV === 'production',
-        sameSite: 'lax'
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
       })
 
       return { success: true }

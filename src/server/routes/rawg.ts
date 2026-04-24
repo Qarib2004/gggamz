@@ -14,7 +14,7 @@ const SWITCH_ID = 7
 const PLATFORM_IDS = [PS4_ID, PS5_ID, SWITCH_ID].join(',')
 
 const cache = new Map<string, { data: any[]; updatedAt: number }>()
-const CACHE_TTL = 1000 * 60 * 60 // 1 hour
+const CACHE_TTL = 1000 * 60 * 60 
 
 export const rawgRoutes = new Elysia({ prefix: '/api/rawg' })
   .get(
