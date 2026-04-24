@@ -52,8 +52,7 @@ export function App() {
       }
     })
   }}
-  className='fixed bottom-4 right-4 px-4 py-2 bg-dark/70 border border-white/10 rounded-lg text-white hover:border-accent/50 transition-colors font-serif text-sm'
->
+className='fixed top-4 right-4 px-4 py-2 bg-dark/70 border border-white/10 rounded-lg text-white hover:border-accent/50 transition-colors font-serif text-sm'>
   Login
 </button>
       <div className='mt-6 flex items-center gap-2 max-w-md mx-auto'>
