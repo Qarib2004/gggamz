@@ -2,6 +2,7 @@ import { cn } from '@client/utils/cn'
 import type { TGame } from '@shared/types/game.types'
 import { MessageSquareText, X } from 'lucide-react'
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 
 interface Props {
   game: TGame
@@ -80,6 +81,13 @@ export function GameCard({ game }: Props) {
             </span>
           )}
         </div>
+        <Link
+          to={`/games/${game.slug}/comments`}
+          className='mt-3 inline-flex items-center gap-2 rounded-lg border border-accent/40 bg-dark/70 px-3 py-1.5 text-xs text-accent hover:border-accent hover:bg-dark/90'
+        >
+          <MessageSquareText className='h-3.5 w-3.5' />
+          Comments
+        </Link>
       </div>
 
       {isShowReview && (

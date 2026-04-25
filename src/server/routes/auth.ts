@@ -1,12 +1,33 @@
 import jwt from '@elysiajs/jwt'
 import { db } from '@server/db/client'
-import { admins } from '@server/db/schema'
+import { admins, users } from '@server/db/schema'
 import { eq } from 'drizzle-orm'
 import Elysia, { t } from 'elysia'
 
+const PASSWORD_PREFIX = 'pw:'
+
+const normalizePassword = (password: string) => `${PASSWORD_PREFIX}${password}`
+
+const hashPassword = async (password: string) =>
+  Bun.password.hash(normalizePassword(password))
+
+const verifyPassword = async (password: string, hash: string) => {
+  // Keep backward compatibility with hashes created before normalization.
+  const normalizedMatches = await Bun.password.verify(
+    normalizePassword(password),
+    hash
+  )
+
+  if (normalizedMatches) {
+    return true
+  }
+
+  return Bun.password.verify(password, hash)
+}
+
 export const authRoutes = new Elysia({ prefix: '/api/auth' })
   .use(jwt({ name: 'jwt', secret: process.env.JWT_SECRET! }))
-    .post(
+  .post(
     '/register',
     async ({ body }) => {
       const existing = await db.query.admins.findFirst({
@@ -17,7 +38,7 @@ export const authRoutes = new Elysia({ prefix: '/api/auth' })
         throw new Error('Username already taken')
       }
 
-      const passwordHash = await Bun.password.hash(body.password)
+      const passwordHash = await hashPassword(body.password)
 
       await db.insert(admins).values({
         username: body.username,
@@ -29,7 +50,7 @@ export const authRoutes = new Elysia({ prefix: '/api/auth' })
     {
       body: t.Object({
         username: t.String({ minLength: 3 }),
-        password: t.String({ minLength: 8 })
+        password: t.String()
       })
     }
   )
@@ -42,7 +63,7 @@ export const authRoutes = new Elysia({ prefix: '/api/auth' })
 
       if (
         !admin ||
-        !(await Bun.password.verify(body.password, admin.passwordHash))
+        !(await verifyPassword(body.password, admin.passwordHash))
       ) {
         throw new Error('Invalid username or password')
       }
@@ -52,7 +73,7 @@ export const authRoutes = new Elysia({ prefix: '/api/auth' })
       cookie.accessToken.set({
         value: tokenJWT,
         httpOnly: true,
-        maxAge: 60 * 60 * 24 * 3, 
+        maxAge: 60 * 60 * 24 * 3,
         secure: process.env.NODE_ENV === 'production',
         sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
       })
@@ -66,6 +87,127 @@ export const authRoutes = new Elysia({ prefix: '/api/auth' })
       }),
       cookie: t.Cookie({
         accessToken: t.Optional(t.String())
+      })
+    }
+  )
+  .post(
+    '/user/register',
+    async ({ body, set }) => {
+      const existing = await db.query.users.findFirst({
+        where: eq(users.username, body.username)
+      })
+
+      if (existing) {
+        set.status = 409
+        return { message: 'Username already taken' }
+      }
+
+      const passwordHash = await hashPassword(body.password)
+
+      await db.insert(users).values({
+        username: body.username,
+        passwordHash
+      })
+
+      return { success: true }
+    },
+    {
+      body: t.Object({
+        username: t.String({ minLength: 3 }),
+        password: t.String()
+      })
+    }
+  )
+  .post(
+    '/user/login',
+    async ({ body, jwt, cookie, set }) => {
+      const user = await db.query.users.findFirst({
+        where: eq(users.username, body.username)
+      })
+
+      if (
+        !user ||
+        !(await verifyPassword(body.password, user.passwordHash))
+      ) {
+        set.status = 401
+        return { message: 'Invalid username or password' }
+      }
+
+      const userToken = await jwt.sign({ userId: user.id })
+
+      cookie.userToken.set({
+        value: userToken,
+        httpOnly: true,
+        maxAge: 60 * 60 * 24 * 7,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
+      })
+
+      return {
+        success: true,
+        user: {
+          id: user.id,
+          username: user.username
+        }
+      }
+    },
+    {
+      body: t.Object({
+        username: t.String(),
+        password: t.String()
+      }),
+      cookie: t.Cookie({
+        userToken: t.Optional(t.String())
+      })
+    }
+  )
+  .get(
+    '/user/me',
+    async ({ cookie, jwt, set }) => {
+      const token = cookie.userToken?.value
+
+      if (!token) {
+        set.status = 401
+        return { message: 'Unauthorized' }
+      }
+
+      const payload = await jwt.verify(token)
+
+      if (!payload || typeof payload !== 'object' || !('userId' in payload)) {
+        set.status = 401
+        return { message: 'Unauthorized' }
+      }
+
+      const user = await db.query.users.findFirst({
+        where: eq(users.id, String(payload.userId)),
+        columns: {
+          id: true,
+          username: true
+        }
+      })
+
+      if (!user) {
+        set.status = 401
+        return { message: 'Unauthorized' }
+      }
+
+      return user
+    },
+    {
+      cookie: t.Cookie({
+        userToken: t.Optional(t.String())
+      })
+    }
+  )
+  .post(
+    '/user/logout',
+    async ({ cookie }) => {
+      cookie.userToken.remove()
+      return { success: true }
+    },
+    {
+      cookie: t.Cookie({
+        userToken: t.Optional(t.String())
       })
     }
   )

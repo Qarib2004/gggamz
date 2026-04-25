@@ -15,6 +15,13 @@
       "when": 1777021281025,
       "tag": "0001_faithful_magma",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1777142148998,
+      "tag": "0002_chemical_norrin_radd",
+      "breakpoints": true
     }
   ]
 }

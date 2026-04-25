@@ -1,6 +1,7 @@
 import cors from '@elysiajs/cors'
 import Elysia from 'elysia'
 import { authRoutes } from './routes/auth'
+import { commentRoutes } from './routes/comments'
 import { gameRoutes } from './routes/games'
 import { genreRoutes } from './routes/genres'
 import { pollRoutes } from './routes/polls'
@@ -15,6 +16,7 @@ app.use(cors({
 }))
 
 app.use(authRoutes)
+app.use(commentRoutes)
 app.use(genreRoutes)
 app.use(gameRoutes)
 app.use(pollRoutes)

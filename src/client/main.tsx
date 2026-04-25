@@ -11,6 +11,8 @@ import { Toaster } from 'sonner'
 import { App } from './pages/home/App'
 import { Admin } from './pages/admin/Admin'
 import { AdminLoginForm } from './pages/admin/login-form/AdminLoginForm'
+import { UserAuthPage } from './pages/auth/UserAuthPage'
+import { GameCommentsPage } from './pages/comments/GameCommentsPage'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -28,6 +30,9 @@ ReactDom.createRoot(document.getElementById('root')!).render(
         <Layout>
           <Routes>
             <Route path='/' element={<App />} />
+            <Route path='/auth/login' element={<UserAuthPage mode='login' />} />
+            <Route path='/auth/register' element={<UserAuthPage mode='register' />} />
+            <Route path='/games/:slug/comments' element={<GameCommentsPage />} />
             <Route path='/blade/auth' element={<AdminLoginForm />} />
             <Route path='/blade' element={<Admin />} /> 
           </Routes>

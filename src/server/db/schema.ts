@@ -114,3 +114,42 @@ export const admins = pgTable('admins', {
   createdAt: timestamp('created_at').notNull().defaultNow(),
   updatedAt: timestamp('updated_at').notNull().defaultNow()
 })
+
+export const users = pgTable('users', {
+  id: text('id')
+    .primaryKey()
+    .$defaultFn(() => createId()),
+  username: text('username').notNull().unique(),
+  passwordHash: text('password_hash').notNull(),
+
+  createdAt: timestamp('created_at').notNull().defaultNow(),
+  updatedAt: timestamp('updated_at').notNull().defaultNow()
+})
+
+export const comments = pgTable('comments', {
+  id: text('id')
+    .primaryKey()
+    .$defaultFn(() => createId()),
+  body: text('body').notNull(),
+
+  gameId: text('game_id')
+    .notNull()
+    .references(() => games.id, { onDelete: 'cascade' }),
+  userId: text('user_id')
+    .notNull()
+    .references(() => users.id, { onDelete: 'cascade' }),
+
+  createdAt: timestamp('created_at').notNull().defaultNow(),
+  updatedAt: timestamp('updated_at').notNull().defaultNow()
+})
+
+export const commentsRelations = relations(comments, ({ one }) => ({
+  game: one(games, {
+    fields: [comments.gameId],
+    references: [games.id]
+  }),
+  user: one(users, {
+    fields: [comments.userId],
+    references: [users.id]
+  })
+}))
