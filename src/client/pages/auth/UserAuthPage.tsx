@@ -1,5 +1,5 @@
 import { api } from '@client/api/axios'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { AxiosError } from 'axios'
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
@@ -15,6 +15,7 @@ export function UserAuthPage({ mode }: Props) {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const navigate = useNavigate()
+  const queryClient = useQueryClient()
 
   const isLogin = mode === 'login'
 
@@ -24,8 +25,9 @@ export function UserAuthPage({ mode }: Props) {
       const path = isLogin ? '/auth/user/login' : '/auth/user/register'
       return api.post(path, { username, password })
     },
-    onSuccess: () => {
+    onSuccess: response => {
       if (isLogin) {
+        queryClient.setQueryData(['user-me'], response.data.user)
         toast.success('Logged in successfully')
         navigate('/', { replace: true })
         return

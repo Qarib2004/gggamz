@@ -13,17 +13,20 @@ import { useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 
+type UserMe = { id: string; username: string }
+
 export function App() {
   const navigate = useNavigate()
   const queryClient = useQueryClient()
   const [genreSlug] = useQueryState('genre')
   const [searchTerm, setSearchTerm] = useQueryState('search')
-  const { data: user } = useQuery({
+  const { data: user } = useQuery<UserMe | null>({
     queryKey: ['user-me'],
     queryFn: () =>
       api
-        .get<{ id: string; username: string }>('/auth/user/me')
-        .then(res => res.data),
+        .get<UserMe>('/auth/user/me')
+        .then(res => res.data)
+        .catch(() => null),
     retry: false
   })
 
@@ -41,7 +44,8 @@ export function App() {
     mutationKey: ['user-logout'],
     mutationFn: () => api.post('/auth/user/logout'),
     onSuccess: () => {
-      queryClient.removeQueries({ queryKey: ['user-me'] })
+      queryClient.setQueryData<UserMe | null>(['user-me'], null)
+      queryClient.invalidateQueries({ queryKey: ['user-me'] })
       toast.success('Logged out')
     }
   })
