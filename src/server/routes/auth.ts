@@ -7,6 +7,15 @@ import Elysia, { t } from 'elysia'
 const PASSWORD_PREFIX = 'pw:'
 
 const normalizePassword = (password: string) => `${PASSWORD_PREFIX}${password}`
+const isProduction = process.env.NODE_ENV === 'production'
+const cookieDomain = process.env.COOKIE_DOMAIN
+const sharedCookieOptions = {
+  httpOnly: true,
+  secure: isProduction,
+  sameSite: isProduction ? 'none' : 'lax',
+  path: '/',
+  ...(cookieDomain ? { domain: cookieDomain } : {})
+} as const
 
 const hashPassword = async (password: string) =>
   Bun.password.hash(normalizePassword(password))
@@ -72,10 +81,8 @@ export const authRoutes = new Elysia({ prefix: '/api/auth' })
 
       cookie.accessToken.set({
         value: tokenJWT,
-        httpOnly: true,
         maxAge: 60 * 60 * 24 * 3,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
+        ...sharedCookieOptions
       })
 
       return { success: true }
@@ -137,10 +144,8 @@ export const authRoutes = new Elysia({ prefix: '/api/auth' })
 
       cookie.userToken.set({
         value: userToken,
-        httpOnly: true,
         maxAge: 60 * 60 * 24 * 7,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
+        ...sharedCookieOptions
       })
 
       return {
