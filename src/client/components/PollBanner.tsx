@@ -30,16 +30,18 @@ export function PollBanner({ token, onNeedCaptcha, onUsed }: Props) {
         <span className='text-xs uppercase tracking-wider text-accent'>
           Vote
         </span>
-        <h3 className='font-serif text-lg'>{activePoll.title}</h3>
+        <h3 className='font-serif text-base sm:text-lg'>{activePoll.title}</h3>
         {activePoll.description && (
-          <p className='text-sm text-gray mt-1'>{activePoll.description}</p>
+          <p className='mt-1 text-xs text-gray sm:text-sm'>
+            {activePoll.description}
+          </p>
         )}
       </div>
       <div className='mt-3'>
         <button
           onClick={handleVote}
           disabled={isPending}
-          className='flex items-center gap-2 px-4 py-2 bg-accent text-dark font-serif font-bold rounded-lg hover:bg-accent/80 transition-colors disabled:opacity-50'
+          className='flex w-full items-center justify-center gap-2 rounded-lg bg-accent px-4 py-2 font-serif font-bold text-dark transition-colors hover:bg-accent/80 disabled:opacity-50 sm:w-auto'
         >
           <Vote className='w-4 h-4' />
           <span>{activePoll.votesCount}</span>

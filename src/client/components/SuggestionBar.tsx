@@ -70,9 +70,9 @@ export function SuggestionBar({
             key={s.id}
             onClick={() => handleVote(s.id)}
             disabled={isVoting}
-            className='flex items-center gap-2 px-3 py-1.5 bg-dark/60 border border-white/10 rounded-lg hover:border-accent/50 transition-all text-sm group disabled:opacity-50'
+            className='group flex max-w-full items-center gap-2 rounded-lg border border-white/10 bg-dark/60 px-3 py-1.5 text-left text-xs transition-all hover:border-accent/50 disabled:opacity-50 sm:text-sm'
           >
-            <span className='text-white/80 group-hover:text-white'>
+            <span className='max-w-[180px] truncate text-white/80 group-hover:text-white sm:max-w-[240px]'>
               {s.gameName}
             </span>
             <span className='flex items-center gap-0.5 text-accent'>
@@ -90,7 +90,7 @@ export function SuggestionBar({
               key={g.id}
               onClick={() => handleAdd(g)}
               disabled={isAdding}
-              className='px-3 py-1.5 bg-dark/60 border border-white/10 rounded-lg hover:border-accent/50 text-sm text-white/80 hover:text-white disabled:opacity-50'
+              className='max-w-full truncate rounded-lg border border-white/10 bg-dark/60 px-3 py-1.5 text-left text-xs text-white/80 hover:border-accent/50 hover:text-white disabled:opacity-50 sm:text-sm'
             >
               {g.name}
             </button>

@@ -47,8 +47,8 @@ export function UserAuthPage({ mode }: Props) {
   }
 
   return (
-    <div className='mx-auto mt-20 w-full max-w-md rounded-xl border border-white/10 bg-dark/70 p-6'>
-      <h1 className='font-serif text-2xl text-accent'>
+    <div className='mx-auto mt-12 w-full max-w-md rounded-xl border border-white/10 bg-dark/70 p-4 sm:mt-20 sm:p-6'>
+      <h1 className='font-serif text-xl text-accent sm:text-2xl'>
         {isLogin ? 'User Login' : 'User Registration'}
       </h1>
       <p className='mt-2 text-sm text-white/70'>

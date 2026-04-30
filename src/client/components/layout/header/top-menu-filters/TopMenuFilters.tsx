@@ -9,8 +9,8 @@ export function TopMenuFilters() {
   const { data: genres = [], isLoading: isGenresLoading } = useGenres()
 
   return (
-    <nav>
-      <ul className='flex items-center gap-12 justify-center'>
+    <nav className='overflow-x-auto pb-1'>
+      <ul className='flex min-w-max items-center justify-start gap-6 px-1 sm:justify-center sm:gap-10'>
         {isGenresLoading ? (
           <SkeletonLoader count={5} />
         ) : (
@@ -18,7 +18,7 @@ export function TopMenuFilters() {
             <li key={genre.slug}>
               <button
                 className={cn(
-                  'font-serif text-xl font-medium transition-colors hover:text-accent hover:underline hover:underline-offset-5',
+                  'whitespace-nowrap font-serif text-base font-medium transition-colors hover:text-accent hover:underline hover:underline-offset-5 sm:text-lg md:text-xl',
                   {
                     'text-accent underline underline-offset-5':
                       genre.slug.toString() === genreSlug

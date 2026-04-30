@@ -18,7 +18,7 @@ const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       refetchOnWindowFocus: false,
-      staleTime: 1000 * 60 * 5 
+      staleTime: 1000 * 60 * 5
     }
   }
 })
@@ -31,10 +31,16 @@ ReactDom.createRoot(document.getElementById('root')!).render(
           <Routes>
             <Route path='/' element={<App />} />
             <Route path='/auth/login' element={<UserAuthPage mode='login' />} />
-            <Route path='/auth/register' element={<UserAuthPage mode='register' />} />
-            <Route path='/games/:slug/comments' element={<GameCommentsPage />} />
+            <Route
+              path='/auth/register'
+              element={<UserAuthPage mode='register' />}
+            />
+            <Route
+              path='/games/:slug/comments'
+              element={<GameCommentsPage />}
+            />
             <Route path='/blade/auth' element={<AdminLoginForm />} />
-            <Route path='/blade' element={<Admin />} /> 
+            <Route path='/blade' element={<Admin />} />
           </Routes>
 
           <Toaster />

@@ -62,16 +62,16 @@ export function App() {
   return (
     <div className='mb-10'>
       <TopMenuFilters />
-      <div className='fixed top-4 right-4 flex items-center gap-2'>
+      <div className='fixed top-3 right-3 z-30 flex max-w-[calc(100vw-1.5rem)] flex-wrap items-center justify-end gap-2 sm:top-4 sm:right-4 sm:max-w-none'>
         {user ? (
           <>
-            <div className='px-4 py-2 bg-dark/70 border border-accent/40 rounded-lg text-accent font-serif text-sm'>
+            <div className='max-w-[48vw] truncate rounded-lg border border-accent/40 bg-dark/70 px-3 py-2 font-serif text-xs text-accent sm:max-w-none sm:px-4 sm:text-sm'>
               {user.username}
             </div>
             <button
               onClick={() => logoutMutation.mutate()}
               disabled={logoutMutation.isPending}
-              className='px-4 py-2 bg-dark/70 border border-white/10 rounded-lg text-white hover:border-accent/50 transition-colors font-serif text-sm disabled:opacity-60'
+              className='rounded-lg border border-white/10 bg-dark/70 px-3 py-2 font-serif text-xs text-white transition-colors hover:border-accent/50 disabled:opacity-60 sm:px-4 sm:text-sm'
             >
               Logout
             </button>
@@ -90,13 +90,13 @@ export function App() {
                 }
               })
             }}
-            className='px-4 py-2 bg-dark/70 border border-white/10 rounded-lg text-white hover:border-accent/50 transition-colors font-serif text-sm'
+            className='rounded-lg border border-white/10 bg-dark/70 px-3 py-2 font-serif text-xs text-white transition-colors hover:border-accent/50 sm:px-4 sm:text-sm'
           >
             Login
           </button>
         )}
       </div>
-      <div className='mt-6 flex items-center gap-2 max-w-md mx-auto'>
+      <div className='mx-auto mt-6 flex w-full max-w-md items-center gap-2'>
         <input
           type='text'
           placeholder='Search your favorite games...'
@@ -116,8 +116,8 @@ export function App() {
       </div>
       <GameList games={games} isLoading={isGamesLoading} />
 
-      <div className='p-4 bg-dark/60 border border-accent/30 rounded-xl'>
-        <div className='grid grid-cols-2 gap-4'>
+      <div className='rounded-xl border border-accent/30 bg-dark/60 p-3 sm:p-4'>
+        <div className='grid grid-cols-1 gap-4 lg:grid-cols-2'>
           <SuggestionBar
             genreSlug={genreSlug}
             token={token}

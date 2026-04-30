@@ -4,10 +4,10 @@ import { Header } from './header/Header'
 
 
 export default function Layout({ children }: PropsWithChildren) {
-      const bgRef = useParallax()
+  const bgRef = useParallax()
 
   return (
- <div className='relative min-h-screen overflow-hidden'>
+    <div className='relative min-h-screen overflow-hidden'>
       <div ref={bgRef} className='absolute inset-0 will-change-transform'>
         <img
           src='/images/forest-vedmak.jpg'
@@ -26,7 +26,7 @@ export default function Layout({ children }: PropsWithChildren) {
       <div className='absolute inset-0 bg-[radial-gradient(circle,transparent_60%,rgba(0,0,0,0.4)_100%)]' />
 
       <div className='relative z-10'>
-        <div className='container max-w-290 mx-auto'>
+        <div className='mx-auto w-full max-w-[1160px] px-3 sm:px-4 md:px-6'>
           <Header />
 
           <div>{children}</div>

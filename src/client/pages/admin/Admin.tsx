@@ -26,7 +26,7 @@ type GameForm = Pick<
 }
 
 export function Admin() {
-    const navigate = useNavigate()
+  const navigate = useNavigate()
   const [search, setSearch] = useState('')
   const [selected, setSelected] = useState<IRawgGame | null>(null)
 
@@ -96,18 +96,17 @@ export function Admin() {
   }
 
   return (
-    <div className='max-w-2xl mx-auto mt-10 space-y-5'>
+    <div className='mx-auto mt-8 w-full max-w-2xl space-y-5 pb-6 sm:mt-10'>
       <h1 className='text-2xl font-serif text-accent'>Add Game</h1>
       <button
-    type='button'
-    onClick={() => navigate('/')}
-    className='px-4 py-2 bg-dark/70 border border-white/10 rounded-lg text-white hover:border-accent/50 transition-colors font-serif text-sm'
-  >
-    Main page
-  </button>
+        type='button'
+        onClick={() => navigate('/')}
+        className='rounded-lg border border-white/10 bg-dark/70 px-4 py-2 font-serif text-sm text-white transition-colors hover:border-accent/50'
+      >
+        Main page
+      </button>
 
       <div className='relative'>
-        
         <input
           type='text'
           placeholder='Search game in RAWG...'
@@ -116,7 +115,7 @@ export function Admin() {
             setSearch(e.target.value)
             if (selected) setSelected(null)
           }}
-          className='w-full px-4 py-2 bg-dark/70 border border-white/10 rounded-lg text-white placeholder:text-gray focus:outline-none focus:border-accent/50 font-serif'
+          className='w-full rounded-lg border border-white/10 bg-dark/70 px-4 py-2 font-serif text-white placeholder:text-gray focus:border-accent/50 focus:outline-none'
         />
         {results.length > 0 && (
           <ul className='absolute z-20 w-full bg-dark border border-white/10 rounded-lg mt-1 max-h-60 overflow-auto'>
@@ -142,13 +141,13 @@ export function Admin() {
       {selected && (
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className='space-y-4 bg-dark/50 p-4 rounded-lg border border-white/10'
+          className='space-y-4 rounded-lg border border-white/10 bg-dark/50 p-3 sm:p-4'
         >
-          <div className='flex gap-4'>
+          <div className='flex flex-col gap-4 sm:flex-row'>
             {selected.background_image && (
               <img
                 src={selected.background_image}
-                className='w-32 h-40 object-cover rounded'
+                className='h-52 w-full rounded object-cover sm:h-40 sm:w-32'
               />
             )}
             <div>

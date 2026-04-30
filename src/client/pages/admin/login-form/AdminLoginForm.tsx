@@ -25,7 +25,10 @@ export function AdminLoginForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className='max-w-sm mx-auto mt-20 space-y-4'>
+    <form
+      onSubmit={handleSubmit}
+      className='mx-auto mt-12 w-full max-w-sm space-y-4 rounded-xl border border-white/10 bg-dark/60 p-4 sm:mt-20 sm:p-6'
+    >
       <input
         type='text'
         placeholder='Username'

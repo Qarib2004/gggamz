@@ -3,7 +3,7 @@ import type { TAuthUser, TComment } from '@shared/types/comment.types'
 import type { TGame } from '@shared/types/game.types'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { AxiosError } from 'axios'
-import { FormEvent, useState } from 'react'
+import { type FormEvent, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'sonner'
 
@@ -72,12 +72,12 @@ export function GameCommentsPage() {
   }
 
   return (
-    <div className='mx-auto mt-8 max-w-3xl'>
+    <div className='mx-auto mt-6 w-full max-w-3xl pb-6 sm:mt-8'>
       <Link to='/' className='text-sm text-accent hover:underline'>
         Back to games
       </Link>
 
-      <h1 className='mt-3 font-serif text-3xl text-white'>
+      <h1 className='mt-3 font-serif text-2xl text-white sm:text-3xl'>
         Comments for {game.title}
       </h1>
 
@@ -106,13 +106,15 @@ export function GameCommentsPage() {
           placeholder='Write your comment...'
           rows={4}
           maxLength={1000}
-          className='w-full rounded-xl border border-white/10 bg-dark/70 p-3 text-white placeholder:text-gray focus:border-accent/50 focus:outline-none'
+          className='w-full rounded-xl border border-white/10 bg-dark/70 p-3 text-sm text-white placeholder:text-gray focus:border-accent/50 focus:outline-none sm:text-base'
           disabled={!user || createCommentMutation.isPending}
         />
         <button
           type='submit'
-          disabled={!user || createCommentMutation.isPending || !commentBody.trim()}
-          className='rounded-lg bg-accent px-4 py-2 font-serif font-bold text-dark hover:bg-accent/90 disabled:cursor-not-allowed disabled:opacity-60'
+          disabled={
+            !user || createCommentMutation.isPending || !commentBody.trim()
+          }
+          className='w-full rounded-lg bg-accent px-4 py-2 font-serif font-bold text-dark hover:bg-accent/90 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto'
         >
           {createCommentMutation.isPending ? 'Sending...' : 'Add comment'}
         </button>
@@ -129,7 +131,7 @@ export function GameCommentsPage() {
               key={comment.id}
               className='rounded-xl border border-white/10 bg-dark/60 p-4'
             >
-              <div className='mb-2 flex items-center justify-between'>
+              <div className='mb-2 flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between'>
                 <span className='font-semibold text-accent'>
                   {comment.user.username}
                 </span>
@@ -137,7 +139,9 @@ export function GameCommentsPage() {
                   {new Date(comment.createdAt).toLocaleString()}
                 </span>
               </div>
-              <p className='whitespace-pre-wrap text-white/85'>{comment.body}</p>
+              <p className='whitespace-pre-wrap text-white/85'>
+                {comment.body}
+              </p>
             </article>
           ))
         )}
