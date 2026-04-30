@@ -22,6 +22,11 @@ const sharedCookieOptionsWithDomain = cookieDomain
     } as const)
   : null
 const legacyUserCookiePaths = ['/', '/api/auth', '/api/auth/user'] as const
+const expiredCookieValue = {
+  value: '',
+  maxAge: -1,
+  expires: new Date(0)
+} as const
 
 const hashPassword = async (password: string) =>
   Bun.password.hash(normalizePassword(password))
@@ -214,15 +219,13 @@ export const authRoutes = new Elysia({ prefix: '/api/auth' })
     async ({ cookie }) => {
       for (const path of legacyUserCookiePaths) {
         cookie.userToken.set({
-          value: '',
-          maxAge: 0,
+          ...expiredCookieValue,
           ...sharedCookieOptions,
           path
         })
         if (sharedCookieOptionsWithDomain) {
           cookie.userToken.set({
-            value: '',
-            maxAge: 0,
+            ...expiredCookieValue,
             ...sharedCookieOptionsWithDomain,
             path
           })
@@ -240,25 +243,21 @@ export const authRoutes = new Elysia({ prefix: '/api/auth' })
     '/logout',
     async ({ cookie }) => {
       cookie.accessToken.set({
-        value: '',
-        maxAge: 0,
+        ...expiredCookieValue,
         ...sharedCookieOptions
       })
       cookie.accessToken.set({
-        value: '',
-        maxAge: 0,
+        ...expiredCookieValue,
         ...sharedCookieOptions,
         path: '/api/auth'
       })
       if (sharedCookieOptionsWithDomain) {
         cookie.accessToken.set({
-          value: '',
-          maxAge: 0,
+          ...expiredCookieValue,
           ...sharedCookieOptionsWithDomain
         })
         cookie.accessToken.set({
-          value: '',
-          maxAge: 0,
+          ...expiredCookieValue,
           ...sharedCookieOptionsWithDomain,
           path: '/api/auth'
         })
