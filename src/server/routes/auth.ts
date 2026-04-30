@@ -13,16 +13,20 @@ const sharedCookieOptions = {
   httpOnly: true,
   secure: isProduction,
   sameSite: isProduction ? 'none' : 'lax',
-  path: '/',
-  ...(cookieDomain ? { domain: cookieDomain } : {})
+  path: '/'
 } as const
+const sharedCookieOptionsWithDomain = cookieDomain
+  ? ({
+      ...sharedCookieOptions,
+      domain: cookieDomain
+    } as const)
+  : null
 const legacyUserCookiePaths = ['/', '/api/auth', '/api/auth/user'] as const
 
 const hashPassword = async (password: string) =>
   Bun.password.hash(normalizePassword(password))
 
 const verifyPassword = async (password: string, hash: string) => {
-  // Keep backward compatibility with hashes created before normalization.
   const normalizedMatches = await Bun.password.verify(
     normalizePassword(password),
     hash
@@ -215,6 +219,14 @@ export const authRoutes = new Elysia({ prefix: '/api/auth' })
           ...sharedCookieOptions,
           path
         })
+        if (sharedCookieOptionsWithDomain) {
+          cookie.userToken.set({
+            value: '',
+            maxAge: 0,
+            ...sharedCookieOptionsWithDomain,
+            path
+          })
+        }
       }
       return { success: true }
     },
@@ -238,6 +250,19 @@ export const authRoutes = new Elysia({ prefix: '/api/auth' })
         ...sharedCookieOptions,
         path: '/api/auth'
       })
+      if (sharedCookieOptionsWithDomain) {
+        cookie.accessToken.set({
+          value: '',
+          maxAge: 0,
+          ...sharedCookieOptionsWithDomain
+        })
+        cookie.accessToken.set({
+          value: '',
+          maxAge: 0,
+          ...sharedCookieOptionsWithDomain,
+          path: '/api/auth'
+        })
+      }
       return { success: true }
     },
     {
