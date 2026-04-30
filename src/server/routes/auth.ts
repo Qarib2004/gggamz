@@ -152,7 +152,7 @@ export const authRoutes = new Elysia({ prefix: '/api/auth' })
 
       const userToken = await jwt.sign({ userId: user.id })
 
-      cookie.userToken.set({
+      cookie.userTokenV2.set({
         value: userToken,
         maxAge: 60 * 60 * 24 * 7,
         ...sharedCookieOptions
@@ -172,14 +172,14 @@ export const authRoutes = new Elysia({ prefix: '/api/auth' })
         password: t.String()
       }),
       cookie: t.Cookie({
-        userToken: t.Optional(t.String())
+        userTokenV2: t.Optional(t.String())
       })
     }
   )
   .get(
     '/user/me',
     async ({ cookie, jwt, set }) => {
-      const token = cookie.userToken?.value
+      const token = cookie.userTokenV2?.value
 
       if (!token) {
         set.status = 401
@@ -210,7 +210,7 @@ export const authRoutes = new Elysia({ prefix: '/api/auth' })
     },
     {
       cookie: t.Cookie({
-        userToken: t.Optional(t.String())
+        userTokenV2: t.Optional(t.String())
       })
     }
   )
@@ -218,13 +218,13 @@ export const authRoutes = new Elysia({ prefix: '/api/auth' })
     '/user/logout',
     async ({ cookie }) => {
       for (const path of legacyUserCookiePaths) {
-        cookie.userToken.set({
+        cookie.userTokenV2.set({
           ...expiredCookieValue,
           ...sharedCookieOptions,
           path
         })
         if (sharedCookieOptionsWithDomain) {
-          cookie.userToken.set({
+          cookie.userTokenV2.set({
             ...expiredCookieValue,
             ...sharedCookieOptionsWithDomain,
             path
@@ -235,7 +235,7 @@ export const authRoutes = new Elysia({ prefix: '/api/auth' })
     },
     {
       cookie: t.Cookie({
-        userToken: t.Optional(t.String())
+        userTokenV2: t.Optional(t.String())
       })
     }
   )

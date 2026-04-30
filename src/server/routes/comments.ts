@@ -43,7 +43,7 @@ export const commentRoutes = new Elysia({ prefix: '/api/comments' })
   .post(
     '/game/:gameId',
     async ({ params, body, cookie, jwt, set }) => {
-      const token = cookie.userToken?.value
+      const token = cookie.userTokenV2?.value
 
       if (!token) {
         set.status = 401
@@ -102,7 +102,7 @@ export const commentRoutes = new Elysia({ prefix: '/api/comments' })
         body: t.String({ minLength: 1, maxLength: 1000 })
       }),
       cookie: t.Cookie({
-        userToken: t.Optional(t.String())
+        userTokenV2: t.Optional(t.String())
       })
     }
   )
